@@ -1,0 +1,50 @@
+<div class="account-drawer-overlay" data-account-drawer-overlay></div>
+
+<div class="account-drawer" data-account-drawer>
+  <div class="account-drawer-header">
+    <h2>Account</h2>
+    <button type="button" class="account-drawer-close-btn" data-close-account-drawer aria-label="Close Account Drawer">
+      Close
+    </button>
+  </div>
+
+  <div class="account-drawer-body">
+    {% if customer %}
+      <h3 style="font-size: 1.5rem; font-weight: 600; color: #0f172a; margin-bottom: 0.5rem;">
+        Welcome back, {{ customer.first_name | default: 'Customer' }}!
+      </h3>
+      <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 2rem;">
+        {{ customer.email }}
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <a href="{{ routes.account_url }}" class="btn btn-primary" style="width: 100%; text-align: center; background: #2b4233; border-color: #2b4233;">
+          View My Orders & Account
+        </a>
+        <a href="{{ routes.account_logout_url }}" style="text-align: center; color: #ef4444; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin-top: 0.5rem;">
+          Sign Out
+        </a>
+      </div>
+    {% else %}
+      <h3 style="font-size: 1.6rem; font-weight: 600; color: #0f172a; margin-bottom: 0.85rem; line-height: 1.25;">
+        Welcome to Your Account
+      </h3>
+      <p style="font-size: 0.95rem; color: #64748b; line-height: 1.6; margin-bottom: 2.25rem;">
+        Manage your profile, track your orders, and enjoy a seamless shopping journey with us.
+      </p>
+
+      <a href="{{ routes.account_login_url }}" class="btn" style="display: block; width: 100%; text-align: center; background: #2b4233; color: #ffffff; padding: 0.9rem 1.5rem; border-radius: 4px; font-weight: 600; text-decoration: none; font-size: 1rem; transition: background 0.2s;">
+        Log In
+      </a>
+
+      {% if shop.customer_accounts_optional %}
+        <div style="margin-top: 1.75rem; text-align: center;">
+          <span style="font-size: 0.9rem; color: #64748b;">Don't have an account? </span>
+          <a href="{{ routes.account_register_url }}" style="font-size: 0.9rem; color: #0f172a; font-weight: 600; text-decoration: underline;">
+            Create One
+          </a>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

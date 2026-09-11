@@ -19,7 +19,7 @@
           {{ 'cart.remove' | t | link_to: item.url_to_remove }}
         </td>
         <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
+          <input type="number" name="updates[]" value="{{ item.quantity }}" min="0">
           <input type="submit" value="{{ 'cart.update' | t }}">
         </td>
       </tr>

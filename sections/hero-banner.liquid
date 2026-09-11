@@ -1,76 +1,138 @@
-<div class="container">
-  <div class="hero-section" style="text-align: {{ section.settings.text_alignment }};">
-    {% if section.settings.image != blank %}
-      <img
-        src="{{ section.settings.image | image_url: width: 1600 }}"
-        alt="{{ section.settings.heading | escape }}"
-        class="hero-bg-image"
-        loading="eager"
-        width="1600"
-        height="800"
-      >
-      <div
-        class="hero-overlay"
-        style="background: rgba(0, 0, 0, {{ section.settings.image_overlay_opacity | divided_by: 100.0 }});"
-      ></div>
-    {% endif %}
+<div class="full-width-banner-wrapper banner-height-{{ section.settings.banner_height | default: 'medium' }}" style="position: relative; width: 100vw; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; overflow: hidden; background-color: #0b0f19; color: #ffffff; margin-top: 4rem; margin-bottom: 2rem;">
+  {% if section.settings.image != blank %}
+    <img
+      src="{{ section.settings.image | image_url: width: 2400 }}"
+      alt="{{ section.settings.heading | escape }}"
+      class="full-width-banner-bg"
+      loading="lazy"
+      width="2400"
+      height="1200"
+    >
+  {% else %}
+    <img
+      src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2400&q=80"
+      alt="Full Width Banner"
+      class="full-width-banner-bg"
+      loading="lazy"
+      width="2400"
+      height="1200"
+    >
+  {% endif %}
 
-    <div class="hero-content" style="{% if section.settings.image != blank %}color: #ffffff;{% endif %} margin: {% if section.settings.text_alignment == 'center' %}0 auto{% elsif section.settings.text_alignment == 'right' %}0 0 0 auto{% else %}0{% endif %};">
+  <div
+    class="full-width-banner-overlay"
+    style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,{{ section.settings.image_overlay_opacity | default: 45 | divided_by: 100.0 }}) 100%); z-index: 1;"
+  ></div>
+
+  <div class="container" style="position: relative; z-index: 2; height: 100%; display: flex; align-items: center; justify-content: {% if section.settings.text_alignment == 'center' %}center{% elsif section.settings.text_alignment == 'right' %}flex-end{% else %}flex-start{% endif %}; padding-top: 5rem; padding-bottom: 5rem;">
+    <div class="full-width-banner-content" style="max-width: 680px; text-align: {{ section.settings.text_alignment | default: 'left' }};">
+      {% if section.settings.subheading != blank %}
+        <span class="full-width-banner-badge" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: #60a5fa; display: block; margin-bottom: 1rem;">
+          {{ section.settings.subheading }}
+        </span>
+      {% endif %}
+
       {% if section.settings.heading != blank %}
-        <h1 class="hero-title">{{ section.settings.heading }}</h1>
+        <h2 class="full-width-banner-title" style="font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.25rem, 4.5vw, 3.5rem); font-weight: 400; line-height: 1.15; margin-bottom: 1.25rem; text-shadow: 0 4px 25px rgba(0,0,0,0.4); color: #ffffff;">
+          {{ section.settings.heading }}
+        </h2>
       {% endif %}
 
       {% if section.settings.subtext != blank %}
-        <div class="hero-subtext">{{ section.settings.subtext }}</div>
+        <div class="full-width-banner-text" style="font-size: 1.1rem; line-height: 1.7; opacity: 0.9; margin-bottom: 2rem; font-weight: 300; color: #f8fafc;">
+          {{ section.settings.subtext }}
+        </div>
       {% endif %}
 
-      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
-        <a href="{{ section.settings.button_link }}" class="btn btn-accent">
-          {{ section.settings.button_label }}
+      {% if section.settings.button_label != blank %}
+        <a href="{{ section.settings.button_link | default: '/collections/all' }}" class="btn" style="background: #ffffff; color: #0f172a; padding: 0.9rem 2.25rem; font-size: 0.95rem; font-weight: 700; border-radius: 0px !important; text-decoration: none; display: inline-block; box-shadow: 0 10px 25px rgba(0,0,0,0.25); transition: all 0.3s ease;">
+          {{ section.settings.button_label }} &rarr;
         </a>
       {% endif %}
     </div>
   </div>
 </div>
 
+<style>
+.full-width-banner-wrapper.banner-height-small {
+  min-height: 420px;
+}
+.full-width-banner-wrapper.banner-height-medium {
+  min-height: 560px;
+}
+.full-width-banner-wrapper.banner-height-large {
+  min-height: 680px;
+}
+.full-width-banner-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+@media (max-width: 768px) {
+  .full-width-banner-wrapper {
+    min-height: 460px !important;
+  }
+}
+</style>
+
 {% schema %}
 {
-  "name": "Hero Banner",
+  "name": "Full Width Hero Banner",
   "tag": "section",
-  "class": "section-hero",
+  "class": "section-hero-banner",
   "settings": [
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Banner Image"
+      "label": "Full Background Image"
     },
     {
       "type": "range",
       "id": "image_overlay_opacity",
       "min": 0,
       "max": 90,
-      "step": 10,
+      "step": 5,
       "unit": "%",
-      "label": "Image overlay opacity",
-      "default": 30
+      "label": "Image Dark Overlay Opacity",
+      "default": 45
+    },
+    {
+      "type": "select",
+      "id": "banner_height",
+      "label": "Banner Height",
+      "options": [
+        { "value": "small", "label": "Compact (420px)" },
+        { "value": "medium", "label": "Medium (560px)" },
+        { "value": "large", "label": "Large (680px)" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Badge / Tagline",
+      "default": "AUTUMN / WINTER '26 EDIT"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Heading",
-      "default": "Elevate Your Style"
+      "label": "Main Heading",
+      "default": "Crafted for Untamed Horizons & Alpine Serenity"
     },
     {
       "type": "richtext",
       "id": "subtext",
-      "label": "Subheading",
-      "default": "<p>Discover our latest dynamic collection crafted for modern living.</p>"
+      "label": "Subheading / Description",
+      "default": "<p>Discover our signature outerwear engineered with sustainable organic weaves, precision tailoring, and weather-defying warmth.</p>"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Button Label",
-      "default": "Shop Now"
+      "label": "Button Text",
+      "default": "Explore Winter Edit"
     },
     {
       "type": "url",
@@ -91,7 +153,7 @@
   ],
   "presets": [
     {
-      "name": "Hero Banner"
+      "name": "Full Width Hero Banner"
     }
   ]
 }

@@ -48,12 +48,12 @@
 
           {% when 'title' %}
             <h1 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem;" {{ block.shopify_attributes }}>
-              {{ product.title | default: "Sample Product Title" }}
+              {{ product.title | default: 'onboarding.product_title' | t }}
             </h1>
 
           {% when 'price' %}
             <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;" {{ block.shopify_attributes }}>
-              <span data-product-price>{{ product.selected_or_first_available_variant.price | money | default: "$29.99" }}</span>
+              <span data-product-price>{{ product.selected_or_first_available_variant.price | money }}</span>
               {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
                 <span data-product-compare-price class="price-compare">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
               {% endif %}
@@ -62,7 +62,7 @@
           {% when 'variant_picker' %}
             {% unless product.has_only_default_variant %}
               <div style="margin-bottom: 1.5rem;" {{ block.shopify_attributes }}>
-                <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Select Options</label>
+                <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">{{ 'products.product.select_options' | t }}</label>
                 <select
                   name="id"
                   data-variant-select
@@ -77,7 +77,7 @@
                       {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
                       {% unless variant.available %}disabled{% endunless %}
                     >
-                      {{ variant.title }} - {{ variant.price | money }} {% unless variant.available %}(Sold Out){% endunless %}
+                      {{ variant.title }} - {{ variant.price | money }} {% unless variant.available %}({{ 'products.product.sold_out' | t }}){% endunless %}
                     </option>
                   {% endfor %}
                 </select>
@@ -98,6 +98,7 @@
                       name="quantity"
                       value="1"
                       min="1"
+                      aria-label="{{ 'products.product.quantity' | t }}"
                       style="width: 100%; padding: 0.75rem; border-radius: var(--border-radius, 12px); border: 1px solid var(--color-border, #e2e8f0); text-align: center;"
                     >
                   </div>
@@ -110,9 +111,9 @@
                     {% unless product.available %}disabled{% endunless %}
                   >
                     {% if product.available %}
-                      Add to Cart
+                      {{ 'products.product.add_to_cart' | t }}
                     {% else %}
-                      Sold Out
+                      {{ 'products.product.sold_out' | t }}
                     {% endif %}
                   </button>
                 </div>

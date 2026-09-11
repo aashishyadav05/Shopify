@@ -1,15 +1,15 @@
 {% comment %}
-  Renders a dynamic product card.
+  Renders a 100% dynamic minimal product card.
   Accepts:
   - card_product: {Object} Product Liquid object
 {% endcomment %}
 
 {% if card_product != blank %}
-  <div class="product-card">
+  <div class="product-card" data-price="{{ card_product.price | divided_by: 100.0 }}" data-available="{{ card_product.available }}">
     <a href="{{ card_product.url }}" class="product-card-media">
       {% if card_product.compare_at_price > card_product.price %}
         <div class="product-card-badge">
-          <span class="badge badge-sale">Sale</span>
+          <span class="badge badge-sale">{{ 'products.product.sale' | t }}</span>
         </div>
       {% endif %}
 
@@ -52,25 +52,6 @@
           <span class="price-compare">{{ card_product.compare_at_price | money }}</span>
         {% endif %}
       </div>
-
-      <div class="product-card-actions">
-        {% form 'product', card_product, data-add-to-cart-form: '' %}
-          <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
-          <button
-            type="submit"
-            name="add"
-            class="btn btn-outline"
-            style="width: 100%; font-size: 0.875rem;"
-            {% unless card_product.available %}disabled{% endunless %}
-          >
-            {% if card_product.available %}
-              Add to Cart
-            {% else %}
-              Sold Out
-            {% endif %}
-          </button>
-        {% endform %}
-      </div>
     </div>
   </div>
 {% else %}
@@ -79,12 +60,9 @@
       {{ 'product-1' | placeholder_svg_tag: 'product-card-image' }}
     </div>
     <div class="product-card-info">
-      <div class="product-card-vendor">Vendor</div>
-      <div class="product-card-title">Example Product Title</div>
-      <div class="product-card-price">$19.99</div>
-      <div class="product-card-actions">
-        <button class="btn btn-outline" style="width: 100%; font-size: 0.875rem;" disabled>Add to Cart</button>
-      </div>
+      <div class="product-card-vendor">{{ 'onboarding.vendor' | t }}</div>
+      <div class="product-card-title">{{ 'onboarding.product_title' | t }}</div>
+      <div class="product-card-price">{{ 1999 | money }}</div>
     </div>
   </div>
 {% endif %}

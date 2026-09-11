@@ -2,7 +2,7 @@
 
 <div class="cart-drawer" data-cart-drawer>
   <div class="cart-drawer-header">
-    <h2 style="font-size: 1.25rem; font-weight: 700;">Your Shopping Cart</h2>
+    <h2 style="font-size: 1.25rem; font-weight: 700;">{{ 'cart.title' | t }}</h2>
     <button type="button" class="icon-btn" data-close-cart-drawer aria-label="Close cart">
       {% render 'icon-close' %}
     </button>
@@ -15,7 +15,7 @@
   >
     {% if cart.item_count == 0 %}
       <div style="text-align: center; padding: 3rem 0; opacity: 0.7;">
-        <p>Your cart is empty.</p>
+        <p>{{ 'cart.empty' | t }}</p>
       </div>
     {% else %}
       {% for item in cart.items %}
@@ -27,13 +27,30 @@
             width="200"
             height="200"
           >
-          <div class="cart-item-details">
-            <div class="cart-item-title">{{ item.product.title }}</div>
+          <div class="cart-item-details" style="position: relative; width: 100%;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
+              <div class="cart-item-title">{{ item.product.title }}</div>
+              <button
+                type="button"
+                class="cart-item-remove-btn"
+                onclick="updateCartItemQty('{{ item.key }}', 0)"
+                aria-label="Remove item"
+                title="Remove item"
+                style="background: none; border: none; cursor: pointer; color: #94a3b8; padding: 0.2rem; line-height: 1; transition: color 0.2s;"
+                onmouseover="this.style.color='#ef4444'"
+                onmouseout="this.style.color='#94a3b8'"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
             {% unless item.product.has_only_default_variant %}
               <div class="cart-item-variant">{{ item.variant.title }}</div>
             {% endunless %}
             <div style="font-weight:700; margin-top:0.25rem;">{{ item.final_line_price | money }}</div>
-            <div class="cart-item-qty">
+            <div class="cart-item-qty" style="margin-top: 0.5rem;">
               <button class="qty-btn" onclick="updateCartItemQty('{{ item.key }}', {{ item.quantity | minus: 1 }})">-</button>
               <span class="qty-val">{{ item.quantity }}</span>
               <button class="qty-btn" onclick="updateCartItemQty('{{ item.key }}', {{ item.quantity | plus: 1 }})">+</button>
@@ -46,12 +63,12 @@
 
   <div class="cart-drawer-footer">
     <div class="cart-summary-row">
-      <span>Subtotal</span>
+      <span>{{ 'cart.subtotal' | t }}</span>
       <span data-cart-drawer-total>{{ cart.total_price | money }}</span>
     </div>
     <form action="{{ routes.cart_url }}" method="post">
       <button type="submit" name="checkout" class="btn btn-primary" style="width: 100%;">
-        Proceed to Checkout
+        {{ 'cart.checkout' | t }}
       </button>
     </form>
   </div>

@@ -4,7 +4,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
+  initSearchDrawer();
   initCartDrawer();
+  initAccountDrawer();
+  initFilterDrawer();
   initAddToCartForms();
   initVariantSelectors();
 });
@@ -21,6 +24,37 @@ function initMobileMenu() {
       navMenu.classList.toggle('active');
     });
   }
+}
+
+/* --------------------------------------------------------------------------
+   Search Drawer Overlay Toggle
+   -------------------------------------------------------------------------- */
+function initSearchDrawer() {
+  const toggleBtn = document.querySelector('[data-toggle-search]');
+  const closeBtn = document.querySelector('[data-close-search]');
+  const searchDrawer = document.querySelector('[data-search-drawer]');
+
+  if (toggleBtn && searchDrawer) {
+    toggleBtn.addEventListener('click', () => {
+      searchDrawer.classList.toggle('active');
+      if (searchDrawer.classList.contains('active')) {
+        const input = searchDrawer.querySelector('input[type="search"]');
+        if (input) input.focus();
+      }
+    });
+  }
+
+  if (closeBtn && searchDrawer) {
+    closeBtn.addEventListener('click', () => {
+      searchDrawer.classList.remove('active');
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && searchDrawer && searchDrawer.classList.contains('active')) {
+      searchDrawer.classList.remove('active');
+    }
+  });
 }
 
 /* --------------------------------------------------------------------------
@@ -57,6 +91,76 @@ function initCartDrawer() {
 
   window.openCartDrawer = openDrawer;
   window.fetchCartAndRender = fetchCartAndRender;
+}
+
+/* --------------------------------------------------------------------------
+   Account Drawer Toggle
+   -------------------------------------------------------------------------- */
+function initAccountDrawer() {
+  const drawerOverlay = document.querySelector('[data-account-drawer-overlay]');
+  const drawer = document.querySelector('[data-account-drawer]');
+  const openBtns = document.querySelectorAll('[data-open-account-drawer]');
+  const closeBtns = document.querySelectorAll('[data-close-account-drawer]');
+
+  function openDrawer() {
+    if (drawerOverlay && drawer) {
+      drawerOverlay.classList.add('active');
+      drawer.classList.add('active');
+    }
+  }
+
+  function closeDrawer() {
+    if (drawerOverlay && drawer) {
+      drawerOverlay.classList.remove('active');
+      drawer.classList.remove('active');
+    }
+  }
+
+  openBtns.forEach(btn => btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openDrawer();
+  }));
+
+  closeBtns.forEach(btn => btn.addEventListener('click', closeDrawer));
+  if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+  window.openAccountDrawer = openDrawer;
+  window.closeAccountDrawer = closeDrawer;
+}
+
+/* --------------------------------------------------------------------------
+   Filter Drawer Toggle (Left Side)
+   -------------------------------------------------------------------------- */
+function initFilterDrawer() {
+  const drawerOverlay = document.querySelector('[data-filter-drawer-overlay]');
+  const drawer = document.querySelector('[data-filter-drawer]');
+  const openBtns = document.querySelectorAll('[data-open-filter-drawer]');
+  const closeBtns = document.querySelectorAll('[data-close-filter-drawer]');
+
+  function openDrawer() {
+    if (drawerOverlay && drawer) {
+      drawerOverlay.classList.add('active');
+      drawer.classList.add('active');
+    }
+  }
+
+  function closeDrawer() {
+    if (drawerOverlay && drawer) {
+      drawerOverlay.classList.remove('active');
+      drawer.classList.remove('active');
+    }
+  }
+
+  openBtns.forEach(btn => btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openDrawer();
+  }));
+
+  closeBtns.forEach(btn => btn.addEventListener('click', closeDrawer));
+  if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+
+  window.openFilterDrawer = openDrawer;
+  window.closeFilterDrawer = closeDrawer;
 }
 
 async function fetchCartAndRender() {
@@ -111,11 +215,19 @@ function renderCartItems(cart) {
     html += `
       <div class="cart-item" data-key="${item.key}">
         <img src="${item.image || ''}" alt="${item.title}" class="cart-item-img">
-        <div class="cart-item-details">
-          <div class="cart-item-title">${item.product_title}</div>
+        <div class="cart-item-details" style="position: relative; width: 100%;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
+            <div class="cart-item-title">${item.product_title}</div>
+            <button type="button" class="cart-item-remove-btn" onclick="updateCartItemQty('${item.key}', 0)" aria-label="Remove item" title="Remove item" style="background: none; border: none; cursor: pointer; color: #94a3b8; padding: 0.2rem; line-height: 1; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
           ${item.variant_title ? `<div class="cart-item-variant">${item.variant_title}</div>` : ''}
           <div style="font-weight:700; margin-top:0.25rem;">${formattedPrice}</div>
-          <div class="cart-item-qty">
+          <div class="cart-item-qty" style="margin-top: 0.5rem;">
             <button class="qty-btn" onclick="updateCartItemQty('${item.key}', ${item.quantity - 1})">-</button>
             <span class="qty-val">${item.quantity}</span>
             <button class="qty-btn" onclick="updateCartItemQty('${item.key}', ${item.quantity + 1})">+</button>
@@ -138,6 +250,7 @@ function updateCartCountBadge(count) {
 }
 
 window.updateCartItemQty = async function(key, newQty) {
+  if (newQty < 0) return;
   try {
     await fetch('/cart/change.js', {
       method: 'POST',

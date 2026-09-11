@@ -1,22 +1,94 @@
 {
   "name": "Home Page",
   "sections": {
-    "hero_banner": {
-      "type": "hero-banner",
+    "cover_slider": {
+      "type": "cover-slider",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Deep Alpine Woods",
+            "tab_label": "Deep Alpine Woods",
+            "tab_subtitle": "Forest Collection",
+            "subtext": "<p>Immerse yourself in lush pine canopy and crisp highland air. Crafted with weather-resistant natural textures inspired by deep evergreen forests.</p>",
+            "button_label": "Shop Forest Collection",
+            "button_link": "/collections/all"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "heading": "Mountain Ridge Expedition",
+            "tab_label": "Mountain Ridge",
+            "tab_subtitle": "Alpine Series",
+            "subtext": "<p>Built for high-altitude serenity and rugged peak vistas. Earthy tones and durable weaves forged for mountain landscapes.</p>",
+            "button_label": "Explore Alpine Series",
+            "button_link": "/collections/all"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "heading": "Mist & Pine Valley",
+            "tab_label": "Mist & Pine",
+            "tab_subtitle": "Highland Edit",
+            "subtext": "<p>Embrace morning forest fog and tranquil wilderness trails. Soft layering pieces washed in moss green and cedar brown tones.</p>",
+            "button_label": "Discover Highland Edit",
+            "button_link": "/collections/all"
+          }
+        },
+        "slide_4": {
+          "type": "slide",
+          "settings": {
+            "heading": "Wilderness Summit",
+            "tab_label": "Wilderness Summit",
+            "tab_subtitle": "Peak Collection",
+            "subtext": "<p>Conquer the great outdoors in style. Premium technical apparel engineered for cold mountain breezes and untamed wilderness trails.</p>",
+            "button_label": "Shop Summit Gear",
+            "button_link": "/collections/all"
+          }
+        },
+        "slide_5": {
+          "type": "slide",
+          "settings": {
+            "heading": "Timber & Canopy",
+            "tab_label": "Timber & Canopy",
+            "tab_subtitle": "Earth & Wood",
+            "subtext": "<p>Inspired by ancient forest timber, deep bark textures, and serene natural horizons. Sustainable materials made to endure every journey.</p>",
+            "button_label": "Explore Timber Collection",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3",
+        "slide_4",
+        "slide_5"
+      ]
+    },
+    "brand_overview_ethos": {
+      "type": "brand-overview",
       "settings": {
-        "heading": "Elevate Your Everyday Style",
-        "subtext": "<p>Discover premium dynamic collections crafted for modern life.</p>",
-        "button_label": "Explore Collection",
-        "button_link": "/collections/all",
-        "text_alignment": "left",
-        "image_overlay_opacity": 30
+        "subheading": "Brand Overview & Ethos",
+        "heading": "Redefining Modern Luxury Through Outdoor & Alpine Craftsmanship",
+        "text": "<p>Egoiste is born at the intersection of wilderness freedom and refined aesthetic. Each piece in our collection is thoughtfully engineered with natural organic fibers, precision tailoring, and weather-defying materials designed to elevate your everyday wardrobe.</p>",
+        "show_stats": true,
+        "stat_1_num": "100%",
+        "stat_1_label": "Organic & Sustainable",
+        "stat_2_num": "Alpine Grade",
+        "stat_2_label": "Weather-Resistant Weaves",
+        "stat_3_num": "Worldwide",
+        "stat_3_label": "Express Delivery",
+        "button_label": "Explore Our Story"
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
         "title": "Featured Collections",
-        "products_to_show": 4,
+        "collections": [],
         "columns_desktop": "4"
       }
     },
@@ -30,6 +102,19 @@
         "button_link": "/pages/about"
       }
     },
+    "hero_banner": {
+      "type": "hero-banner",
+      "settings": {
+        "subheading": "AUTUMN / WINTER '26 EDIT",
+        "heading": "Crafted for Untamed Horizons & Alpine Serenity",
+        "subtext": "<p>Discover our signature outerwear engineered with sustainable organic weaves, precision tailoring, and weather-defying warmth.</p>",
+        "button_label": "Explore Winter Edit",
+        "button_link": "/collections/all",
+        "banner_height": "medium",
+        "image_overlay_opacity": 45,
+        "text_alignment": "left"
+      }
+    },
     "newsletter": {
       "type": "newsletter",
       "settings": {
@@ -39,9 +124,11 @@
     }
   },
   "order": [
-    "hero_banner",
+    "cover_slider",
+    "brand_overview_ethos",
     "featured_collection",
     "image_with_text",
+    "hero_banner",
     "newsletter"
   ]
 }

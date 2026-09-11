@@ -1,7 +1,7 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Dynamic Shopify Custom Theme",
+    "theme_name": "Dynamic Custom Theme",
     "theme_author": "Antigravity",
     "theme_version": "1.0.0",
     "theme_documentation_url": "https://shopify.dev/docs/storefronts/themes",
@@ -88,11 +88,11 @@
         "type": "range",
         "id": "page_width",
         "min": 1000,
-        "max": 1600,
+        "max": 1800,
         "step": 20,
         "unit": "px",
         "label": "Maximum Page Width",
-        "default": 1280
+        "default": 1440
       },
       {
         "type": "range",
@@ -114,8 +114,14 @@
         "id": "cart_type",
         "label": "Cart Type",
         "options": [
-          { "value": "drawer", "label": "Slide-out Drawer" },
-          { "value": "page", "label": "Dedicated Page" }
+          {
+            "value": "drawer",
+            "label": "Slide-out Drawer"
+          },
+          {
+            "value": "page",
+            "label": "Dedicated Page"
+          }
         ],
         "default": "drawer"
       },

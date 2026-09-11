@@ -1,70 +1,74 @@
-{% comment %}
-  This section is used in the search template to render search results for
-  products, articles, and pages.
+<div class="container" style="padding-top: 4rem; padding-bottom: 5rem;">
+  <div style="max-width: 680px; margin: 0 auto 3rem; text-align: center;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">
+      Search Results
+    </h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" style="display: flex; gap: 0.5rem; justify-content: center;">
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search products..."
+        style="flex-grow: 1; padding: 0.75rem 1.25rem; border-radius: var(--border-radius, 12px); border: 1px solid var(--color-border, #e2e8f0); background: var(--color-bg, #ffffff);"
+      >
+      <button type="submit" class="btn btn-primary">
+        Search
+      </button>
+    </form>
+  </div>
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/search
-{% endcomment %}
-
-<h1>{{ 'search.title' | t }}</h1>
-
-<form action="{{ routes.search_url }}" method="get" role="search">
-  <input
-    type="search"
-    size="50"
-    name="q"
-    value="{{ search.terms | escape }}"
-    placeholder="{{ 'search.placeholder' | t }}"
-  >
-  <button type="submit">{{ 'search.submit' | t }}</button>
-</form>
-
-{% if search.performed %}
-  {% if search.results_count == 0 %}
-    <p>{{ 'search.no_results_html' | t: terms: search.terms }}</p>
-  {% else %}
-    <p>{{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count }}</p>
-
-    <div class="search-results">
-      {% paginate search.results by 20 %}
-        {% # Search result items may be an article, a page, or a product. %}
-        {% for result in search.results %}
-          <div class="search-result">
-            {% assign featured_image = result.featured_image | default: result.image %}
-            {% if featured_image %}
-              {% render 'image', class: 'search-result__image', image: featured_image, url: result.url, width: 400 %}
-            {% endif %}
-            <div class="search-result__content">
-              <p>
-                {{ result.title | link_to: result.url }}
-                {% if result.price %}
-                  {{ result.price | money_with_currency }}
-                {% endif %}
-              </p>
-            </div>
-          </div>
-        {% endfor %}
-
-        {{ paginate | default_pagination }}
-      {% endpaginate %}
+  {% if search.performed %}
+    <div style="margin-bottom: 2rem; font-weight: 600; opacity: 0.8;">
+      {% if search.results_count == 0 %}
+        No results found for "{{ search.terms }}". Try checking your spelling or using different keywords.
+      {% else %}
+        Found {{ search.results_count }} result{% if search.results_count > 1 %}s{% endif %} for "{{ search.terms }}"
+      {% endif %}
     </div>
-  {% endif %}
-{% endif %}
 
-{% stylesheet %}
-  .search-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-  .search-results .prev,
-  .search-results .page,
-  .search-results .next {
-    grid-column: 1 / -1;
-  }
-{% endstylesheet %}
+    {% if search.results_count > 0 %}
+      {% paginate search.results by 16 %}
+        <div class="grid grid-4">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              {% render 'product-card', card_product: item %}
+            {% else %}
+              <div class="product-card">
+                <div class="product-card-info" style="padding: 1.5rem;">
+                  <span style="font-size: 0.75rem; text-transform: uppercase; opacity: 0.6; font-weight: 700;">{{ item.object_type }}</span>
+                  <a href="{{ item.url }}" class="product-card-title" style="font-size: 1.1rem; margin-top: 0.5rem; display: block;">
+                    {{ item.title }}
+                  </a>
+                  <p style="font-size: 0.875rem; opacity: 0.75; margin-top: 0.5rem;">
+                    {{ item.content | strip_html | truncatewords: 20 }}
+                  </p>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+            {% if paginate.previous %}
+              <a href="{{ paginate.previous.url }}" class="btn btn-outline">&larr; Previous</a>
+            {% endif %}
+            <span style="display: flex; align-items: center; padding: 0 1rem; font-weight: 600;">
+              Page {{ paginate.current_page }} of {{ paginate.pages }}
+            </span>
+            {% if paginate.next %}
+              <a href="{{ paginate.next.url }}" class="btn btn-outline">Next &rarr;</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+    {% endif %}
+  {% endif %}
+</div>
 
 {% schema %}
 {
-  "name": "t:general.search",
-  "settings": []
+  "name": "Search Page",
+  "tag": "section"
 }
 {% endschema %}

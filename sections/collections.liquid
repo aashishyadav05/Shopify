@@ -1,83 +1,91 @@
-{% comment %}
-  This section is used in the list-collections template to render a list of
-  collections.
+<div class="container" style="padding-top: 4rem; padding-bottom: 5rem;">
+  <div style="margin-bottom: 3rem;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">
+      {{ section.settings.title | default: "All Collections" }}
+    </h1>
+    <p style="opacity: 0.75; font-size: 1.1rem; max-width: 600px;">
+      Explore our curated range of collections crafted for everyday luxury.
+    </p>
+  </div>
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
-{% endcomment %}
+  <div class="grid grid-{{ section.settings.columns_desktop }}">
+    {% assign valid_count = 0 %}
+    {% for collection in collections %}
+      {% unless collection.handle == 'frontpage' %}
+        {% assign valid_count = valid_count | plus: 1 %}
+        <a href="{{ collection.url }}" class="product-card" style="text-decoration: none;">
+          <div class="product-card-media">
+            {% if collection.featured_image != blank %}
+              <img
+                src="{{ collection.featured_image | image_url: width: 800 }}"
+                alt="{{ collection.title | escape }}"
+                class="product-card-image"
+                loading="lazy"
+                width="800"
+                height="800"
+              >
+            {% elsif collection.products.first.featured_media != blank %}
+              <img
+                src="{{ collection.products.first.featured_media | image_url: width: 800 }}"
+                alt="{{ collection.title | escape }}"
+                class="product-card-image"
+                loading="lazy"
+                width="800"
+                height="800"
+              >
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag: 'product-card-image' }}
+            {% endif %}
+          </div>
+          <div class="product-card-info" style="text-align: center;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--color-text, #0f172a); margin-bottom: 0.25rem;">
+              {{ collection.title }}
+            </h3>
+            <span style="font-size: 0.85rem; opacity: 0.7;">
+              {{ collection.all_products_count }} products
+            </span>
+          </div>
+        </a>
+      {% endunless %}
+    {% endfor %}
 
-<h1>{{ 'collections.title' | t }}</h1>
-
-<div
-  class="collections {{ section.settings.grid_item_width }}"
-  style="--grid-gap: {{ section.settings.grid_gap }}px"
->
-  {% for collection in collections %}
-    <a class="collection-card" href="{{ collection.url }}">
-      {% if collection.featured_image %}
-        {% render 'image',
-          class: 'collection-card__image',
-          image: collection.featured_image,
-          width: 600,
-          height: 600,
-          crop: 'center'
-        %}
-      {% endif %}
-
-      <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
-
-        {% if collection.description %}
-          <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
-        {% endif %}
-      </div>
-    </a>
-  {% endfor %}
+    {% if valid_count == 0 %}
+      {% for i in (1..4) %}
+        <div class="product-card">
+          <div class="product-card-media">
+            {{ 'collection-1' | placeholder_svg_tag: 'product-card-image' }}
+          </div>
+          <div class="product-card-info" style="text-align: center;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--color-text, #0f172a);">Example Collection</h3>
+            <span style="font-size: 0.85rem; opacity: 0.7;">0 products</span>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
 </div>
-
-{% stylesheet %}
-  .collections {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--collection-card-size), 100%), 1fr));
-    gap: var(--grid-gap);
-  }
-  .collections--compact {
-    --collection-card-size: 160px;
-  }
-  .collections--full {
-    --collection-card-size: 280px;
-  }
-  .collection-card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.collections_grid",
+  "name": "Collections List",
+  "tag": "section",
   "settings": [
     {
-      "type": "select",
-      "id": "grid_item_width",
-      "label": "t:labels.grid_item_width",
-      "options": [
-        { "value": "collections--compact", "label": "t:options.size.small" },
-        { "value": "collections--full", "label": "t:options.size.large" }
-      ],
-      "default": "collections--full"
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "All Collections"
     },
     {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "t:labels.grid_gap",
-      "min": 0,
-      "max": 50,
-      "step": 5,
-      "unit": "px",
-      "default": 10
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Number of columns on desktop",
+      "options": [
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
     }
-  ],
-  "presets": [{ "name": "t:general.collections_grid" }]
+  ]
 }
 {% endschema %}

@@ -1,0 +1,241 @@
+<div class="filter-drawer-overlay" data-filter-drawer-overlay></div>
+
+<div class="filter-drawer" data-filter-drawer>
+  <div class="filter-drawer-header">
+    <div style="display: flex; align-items: center; gap: 0.6rem;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="21" x2="4" y2="14"></line>
+        <line x1="4" y1="10" x2="4" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12" y2="3"></line>
+        <line x1="20" y1="21" x2="20" y2="16"></line>
+        <line x1="20" y1="12" x2="20" y2="3"></line>
+        <line x1="1" y1="14" x2="7" y2="14"></line>
+        <line x1="9" y1="8" x2="15" y2="8"></line>
+        <line x1="17" y1="16" x2="23" y2="16"></line>
+      </svg>
+      <h2>Filters & Collections</h2>
+    </div>
+    <button type="button" class="filter-drawer-close-btn" data-close-filter-drawer aria-label="Close Filter Drawer">
+      Close
+    </button>
+  </div>
+
+  <div class="filter-drawer-body">
+    <!-- Filter Section 1: Collections -->
+    <div class="filter-group">
+      <h3 class="filter-group-title">Filter by Collection</h3>
+      <div class="filter-collections-list">
+        <a href="/collections/all" class="filter-collection-item {% if collection.handle == 'all' or collection == blank %}active{% endif %}">
+          <span>All Products</span>
+          <span class="filter-count">({{ collections['all'].all_products_count | default: 0 }})</span>
+        </a>
+        {% for col in collections %}
+          {% unless col.handle == 'frontpage' or col.handle == 'all' %}
+            <a href="{{ col.url }}" class="filter-collection-item {% if collection.handle == col.handle %}active{% endif %}">
+              <span>{{ col.title }}</span>
+              <span class="filter-count">({{ col.all_products_count }})</span>
+            </a>
+          {% endunless %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Filter Section 2: Sort By -->
+    <div class="filter-group">
+      <h3 class="filter-group-title">Sort Products</h3>
+      <select
+        id="drawer-sort-by"
+        onchange="location.href = '?sort_by=' + this.value;"
+        class="filter-select"
+      >
+        <option value="manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+        <option value="best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+        <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
+        <option value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
+        <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price, low to high</option>
+        <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price, high to low</option>
+        <option value="created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Date, new to old</option>
+      </select>
+    </div>
+
+    <!-- Filter Section 3: Availability -->
+    <div class="filter-group">
+      <h3 class="filter-group-title">Availability</h3>
+      <label class="filter-checkbox-item">
+        <input type="checkbox" id="filter-in-stock" onchange="applyDrawerFilters()">
+        <span>In Stock Only</span>
+      </label>
+    </div>
+
+    <!-- Filter Section 4: Price Range -->
+    <div class="filter-group">
+      <h3 class="filter-group-title">Price Range</h3>
+      <div style="display: flex; gap: 0.75rem; align-items: center;">
+        <input type="number" id="filter-min-price" placeholder="Min $" class="filter-price-input" min="0" oninput="applyDrawerFilters()">
+        <span style="color: #64748b;">to</span>
+        <input type="number" id="filter-max-price" placeholder="Max $" class="filter-price-input" min="0" oninput="applyDrawerFilters()">
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-drawer-footer">
+    <button type="button" class="btn btn-outline" style="flex: 1; text-align: center;" onclick="resetDrawerFilters()">Clear All</button>
+    <button type="button" class="btn btn-primary" style="flex: 1;" onclick="applyDrawerFilters(true)">Apply Filters</button>
+  </div>
+</div>
+
+<script>
+function initCardOriginalPositions() {
+  const container = document.querySelector('.shop-editorial-container');
+  if (!container) return;
+  const cards = container.querySelectorAll('.product-card');
+  cards.forEach(card => {
+    if (!card._origParent) {
+      card._origParent = card.parentElement;
+      card._origNextSibling = card.nextElementSibling;
+    }
+  });
+}
+
+function applyDrawerFilters(closeOnApply = false) {
+  const container = document.querySelector('.shop-editorial-container');
+  if (!container) return;
+
+  initCardOriginalPositions();
+
+  const minPriceInput = document.getElementById('filter-min-price');
+  const maxPriceInput = document.getElementById('filter-max-price');
+  const inStockInput = document.getElementById('filter-in-stock');
+
+  const minVal = minPriceInput ? minPriceInput.value.trim() : '';
+  const maxVal = maxPriceInput ? maxPriceInput.value.trim() : '';
+
+  const minPrice = minVal !== '' ? parseFloat(minVal) : NaN;
+  const maxPrice = maxVal !== '' ? parseFloat(maxVal) : NaN;
+  const inStockChecked = inStockInput ? inStockInput.checked : false;
+
+  const isFilteringActive = !isNaN(minPrice) || !isNaN(maxPrice) || inStockChecked;
+
+  const allCards = Array.from(container.querySelectorAll('.product-card'));
+  let visibleCards = [];
+
+  allCards.forEach(card => {
+    let show = true;
+
+    // Price Filter
+    let priceNum = card.dataset.price ? parseFloat(card.dataset.price) : NaN;
+    if (isNaN(priceNum)) {
+      const priceEl = card.querySelector('.product-card-price span');
+      if (priceEl) {
+        priceNum = parseFloat(priceEl.textContent.replace(/[^0-9.]/g, ''));
+      }
+    }
+
+    if (!isNaN(minPrice) || !isNaN(maxPrice)) {
+      if (!isNaN(priceNum)) {
+        if (!isNaN(minPrice) && priceNum < minPrice) show = false;
+        if (!isNaN(maxPrice) && priceNum > maxPrice) show = false;
+      }
+    }
+
+    // Availability Filter
+    if (inStockChecked && show) {
+      const isAvail = card.dataset.available;
+      if (isAvail !== undefined) {
+        if (isAvail === 'false') show = false;
+      } else {
+        const soldOutBtn = card.querySelector('button[disabled]');
+        if (soldOutBtn && soldOutBtn.textContent.toLowerCase().includes('sold out')) {
+          show = false;
+        }
+      }
+    }
+
+    if (show) {
+      card.style.display = '';
+      visibleCards.push(card);
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  let topGrid = container.querySelector('.filtered-top-grid');
+  const originalRows = container.querySelectorAll('.grid:not(.filtered-top-grid), .editorial-shop-row');
+
+  if (isFilteringActive) {
+    // Hide all original layout rows (including side promo banners)
+    originalRows.forEach(row => {
+      row.style.display = 'none';
+    });
+
+    // Create or show top grid
+    if (!topGrid) {
+      topGrid = document.createElement('div');
+      topGrid.className = 'grid grid-4 filtered-top-grid';
+      topGrid.style.marginBottom = '2rem';
+      container.prepend(topGrid);
+    }
+    topGrid.style.display = visibleCards.length > 0 ? 'grid' : 'none';
+
+    // Move visible cards into topGrid
+    visibleCards.forEach(card => topGrid.appendChild(card));
+  } else {
+    // Filter is reset: Hide top grid
+    if (topGrid) {
+      topGrid.style.display = 'none';
+    }
+
+    // Restore cards back to their exact original positions
+    allCards.forEach(card => {
+      card.style.display = '';
+      if (card._origParent) {
+        if (card._origNextSibling && card._origNextSibling.parentElement === card._origParent) {
+          card._origParent.insertBefore(card, card._origNextSibling);
+        } else {
+          card._origParent.appendChild(card);
+        }
+      }
+    });
+
+    // Restore visibility of original layout rows & side promo banners
+    originalRows.forEach(row => {
+      row.style.display = '';
+    });
+  }
+
+  // Show "No products match" message if 0 products match
+  let noResultsEl = container.querySelector('.filter-no-results');
+  if (isFilteringActive && visibleCards.length === 0) {
+    if (!noResultsEl) {
+      noResultsEl = document.createElement('div');
+      noResultsEl.className = 'filter-no-results';
+      noResultsEl.style.cssText = 'text-align: center; padding: 4rem 0; color: #64748b; font-size: 1.1rem; width: 100%;';
+      noResultsEl.innerHTML = '<p>No products match your selected filter criteria.</p><button type="button" class="btn btn-outline" onclick="resetDrawerFilters()" style="margin-top:1rem;">Reset Filters</button>';
+      container.prepend(noResultsEl);
+    }
+    noResultsEl.style.display = '';
+  } else if (noResultsEl) {
+    noResultsEl.style.display = 'none';
+  }
+
+  if (closeOnApply && window.closeFilterDrawer) {
+    window.closeFilterDrawer();
+  }
+}
+
+function resetDrawerFilters() {
+  if (document.getElementById('filter-min-price')) document.getElementById('filter-min-price').value = '';
+  if (document.getElementById('filter-max-price')) document.getElementById('filter-max-price').value = '';
+  if (document.getElementById('filter-in-stock')) document.getElementById('filter-in-stock').checked = false;
+  
+  applyDrawerFilters();
+  if (window.closeFilterDrawer) {
+    window.closeFilterDrawer();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initCardOriginalPositions();
+});
+</script>

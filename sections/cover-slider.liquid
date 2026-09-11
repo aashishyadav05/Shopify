@@ -1,0 +1,428 @@
+<div class="cover-slider-wrapper" data-cover-slider>
+  <div class="cover-slides-container">
+    {% for block in section.blocks %}
+      <div
+        class="cover-slide {% if forloop.first %}active{% endif %}"
+        data-slide-index="{{ forloop.index0 }}"
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.image != blank %}
+          <picture>
+            {% if block.settings.mobile_image != blank %}
+              <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_image | image_url: width: 800 }}">
+            {% endif %}
+            <img
+              src="{{ block.settings.image | image_url: width: 2000 }}"
+              alt="{{ block.settings.heading | escape }}"
+              class="cover-slide-image"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              width="2000"
+              height="1125"
+            >
+          </picture>
+        {% else %}
+          <div class="cover-slide-placeholder">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+
+        <div class="cover-slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.7) 100%);"></div>
+
+        <div class="cover-slide-content">
+          {% if block.settings.heading != blank %}
+            <h2 class="cover-slide-title">{{ block.settings.heading }}</h2>
+          {% endif %}
+
+          {% if block.settings.subtext != blank %}
+            <div class="cover-slide-subtext">{{ block.settings.subtext }}</div>
+          {% endif %}
+
+          {% if block.settings.button_label != blank %}
+            <a href="{{ block.settings.button_link | default: '/collections/all' }}" class="btn btn-outline" style="color: #ffffff; border-color: rgba(255,255,255,0.7); padding: 0.65rem 1.5rem; font-size: 0.85rem; font-weight: 600; display: inline-block; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px);">
+              {{ block.settings.button_label }} &rarr;
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Bottom Navigation Tabs Bar -->
+  <div class="cover-nav-tabs">
+    <div class="cover-tabs-grid">
+      {% for block in section.blocks %}
+        <button
+          type="button"
+          class="cover-tab-btn {% if forloop.first %}active{% endif %}"
+          data-tab-index="{{ forloop.index0 }}"
+        >
+          <div class="cover-tab-title">
+            {{ block.settings.tab_label | default: block.settings.heading | default: 'Collection' }}
+          </div>
+          <div class="cover-tab-subtitle">
+            {{ block.settings.tab_subtitle | default: 'Collection' }}
+          </div>
+          <div class="cover-tab-progress">
+            <div class="cover-tab-progress-bar" data-progress-bar></div>
+          </div>
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+.cover-slider-wrapper {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  min-height: 100vh;
+  background-color: #0b0f19;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+.cover-slides-container {
+  position: absolute;
+  inset: 0;
+}
+
+.cover-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+  z-index: 1;
+}
+
+.cover-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.cover-slide-image, .cover-slide-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cover-slide-placeholder svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+}
+
+.cover-slide-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.cover-slide-content {
+  position: absolute;
+  bottom: 8rem;
+  left: 3rem;
+  max-width: 540px;
+  z-index: 3;
+}
+
+.cover-slide-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.cover-slide-subtext {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+/* Navigation Tabs Bar */
+.cover-nav-tabs {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 4;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.85) 100%);
+  padding: 1.5rem 3rem 2rem;
+}
+
+.cover-tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.cover-tab-btn {
+  background: none;
+  border: none;
+  text-align: left;
+  color: #ffffff;
+  cursor: pointer;
+  padding-bottom: 0.5rem;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+
+.cover-tab-btn.active, .cover-tab-btn:hover {
+  opacity: 1;
+}
+
+.cover-tab-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.cover-tab-subtitle {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.6rem;
+}
+
+.cover-tab-progress {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.cover-tab-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #ffffff;
+  transition: width 0.1s linear;
+}
+
+@media (max-width: 768px) {
+  .cover-slider-wrapper {
+    min-height: 85vh;
+  }
+  .cover-slide-content {
+    bottom: 5.5rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    max-width: 100%;
+  }
+  .cover-slide-title {
+    font-size: clamp(1.65rem, 6vw, 2.25rem);
+    margin-bottom: 0.4rem;
+  }
+  .cover-slide-subtext {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cover-nav-tabs {
+    padding: 0.75rem 1rem 1rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.92) 100%);
+  }
+  .cover-tabs-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.25rem;
+    padding-bottom: 0.25rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cover-tabs-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .cover-tab-btn {
+    flex: 0 0 auto;
+    min-width: 135px;
+    scroll-snap-align: start;
+    padding-bottom: 0.25rem;
+  }
+  .cover-tab-title {
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .cover-tab-subtitle {
+    font-size: 0.7rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const slider = document.querySelector('[data-cover-slider]');
+  if (!slider) return;
+
+  const slides = slider.querySelectorAll('.cover-slide');
+  const tabs = slider.querySelectorAll('.cover-tab-btn');
+  const progressBars = slider.querySelectorAll('[data-progress-bar]');
+
+  let currentIndex = 0;
+  let timer = null;
+  let progressInterval = null;
+  let progress = 0;
+  const slideDuration = 5000; // 5 seconds per slide
+  const stepTime = 50; // update progress every 50ms
+
+  function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    tabs.forEach(tab => tab.classList.remove('active'));
+    progressBars.forEach(bar => bar.style.width = '0%');
+
+    currentIndex = (index + slides.length) % slides.length;
+
+    if (slides[currentIndex]) slides[currentIndex].classList.add('active');
+    if (tabs[currentIndex]) {
+      tabs[currentIndex].classList.add('active');
+      const parentGrid = tabs[currentIndex].parentElement;
+      if (parentGrid && parentGrid.scrollWidth > parentGrid.clientWidth) {
+        const tabLeft = tabs[currentIndex].offsetLeft;
+        const tabWidth = tabs[currentIndex].offsetWidth;
+        const gridWidth = parentGrid.offsetWidth;
+        parentGrid.scrollTo({
+          left: tabLeft - (gridWidth / 2) + (tabWidth / 2),
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    clearInterval(progressInterval);
+    progress = 0;
+
+    progressInterval = setInterval(() => {
+      progress += (stepTime / slideDuration) * 100;
+      if (progressBars[currentIndex]) {
+        progressBars[currentIndex].style.width = Math.min(progress, 100) + '%';
+      }
+      if (progress >= 100) {
+        clearInterval(progressInterval);
+        showSlide(currentIndex + 1);
+      }
+    }, stepTime);
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      showSlide(index);
+    });
+  });
+
+  resetTimer();
+});
+</script>
+
+{% schema %}
+{
+  "name": "Cover Slider",
+  "tag": "section",
+  "class": "section-cover-slider",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Court & Country"
+        },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Bottom Tab Heading",
+          "default": "Court & Country"
+        },
+        {
+          "type": "text",
+          "id": "tab_subtitle",
+          "label": "Bottom Tab Subtitle",
+          "default": "Collection"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "label": "Subheading",
+          "default": "<p>Relaxed tailoring and clean silhouettes inspired by the court and countryside. Natural fabrics, refined cuts.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cover Slider",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Deep Alpine Woods",
+            "tab_label": "Deep Alpine Woods",
+            "tab_subtitle": "Forest Collection"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Mountain Ridge Expedition",
+            "tab_label": "Mountain Ridge",
+            "tab_subtitle": "Alpine Series"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Mist & Pine Valley",
+            "tab_label": "Mist & Pine",
+            "tab_subtitle": "Highland Edit"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Wilderness Summit",
+            "tab_label": "Wilderness Summit",
+            "tab_subtitle": "Peak Collection"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

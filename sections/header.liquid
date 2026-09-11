@@ -5,44 +5,122 @@
         {% render 'icon-menu' %}
       </button>
 
-      <a href="{{ routes.root_url }}" class="header-logo">
+      <a href="{{ routes.root_url }}" class="header-logo" style="{% if section.settings.use_serif_font %}font-family: 'Playfair Display', Georgia, serif; font-weight: 400; font-size: 1.75rem;{% endif %}">
         {% if section.settings.logo != blank %}
           <img
             src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"
             alt="{{ shop.name | escape }}"
             width="{{ section.settings.logo_width }}"
-            height="auto"
+            height="50"
+            style="max-width: {{ section.settings.logo_width }}px; height: auto;"
           >
         {% else %}
-          <span>{{ shop.name }}</span>
+          <span>{{ section.settings.logo_text | default: shop.name }}</span>
         {% endif %}
       </a>
 
       <nav class="header-nav" data-header-nav>
-        {% assign main_menu = linklists[section.settings.menu] %}
-        {% if main_menu.links.size > 0 %}
-          {% for link in main_menu.links %}
-            <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
-          {% endfor %}
-        {% else %}
-          <a href="{{ routes.root_url }}" class="nav-link">Home</a>
-          <a href="{{ routes.all_products_collection_url }}" class="nav-link">Shop All</a>
-        {% endif %}
+        <a href="{{ routes.root_url }}" class="nav-link">Home</a>
+        <a href="/collections/all" class="nav-link">Shop</a>
+        
+        <div class="nav-item nav-item-has-mega">
+          <a href="/collections" class="nav-link">collections</a>
+          
+          <div class="mega-menu-container">
+            <div class="container">
+              <div class="mega-menu-grid-4">
+                <!-- Column 1: Featured (3 Dynamic Products) -->
+                <div class="mega-menu-col">
+                  <h4 class="mega-col-title">Featured</h4>
+                  <div class="mega-links-list">
+                    {% assign featured_prods = collections['all'].products %}
+                    {% if featured_prods.size == 0 %}
+                      {% assign featured_prods = collections.first.products %}
+                    {% endif %}
+
+                    {% if featured_prods.size > 0 %}
+                      {% for prod in featured_prods limit: 3 %}
+                        <a href="{{ prod.url }}" class="mega-list-link">{{ prod.title | uppercase }}</a>
+                      {% endfor %}
+                    {% else %}
+                      <a href="/collections/all" class="mega-list-link">NEW ARRIVALS</a>
+                      <a href="/collections/all" class="mega-list-link">BESTSELLERS</a>
+                      <a href="/collections/all" class="mega-list-link">ESSENTIALS</a>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <!-- Column 2: Collections (Dynamic Store Collections) -->
+                <div class="mega-menu-col">
+                  <h4 class="mega-col-title">Collections</h4>
+                  <div class="mega-links-list">
+                    {% assign has_collections = false %}
+                    {% for col in collections %}
+                      {% unless col.handle == 'frontpage' %}
+                        {% assign has_collections = true %}
+                        <a href="{{ col.url }}" class="mega-list-link">{{ col.title | uppercase }}</a>
+                      {% endunless %}
+                    {% endfor %}
+
+                    {% unless has_collections %}
+                      <a href="/collections/all" class="mega-list-link">TOPS</a>
+                      <a href="/collections/all" class="mega-list-link">JEANS</a>
+                      <a href="/collections/all" class="mega-list-link">SHORTS</a>
+                      <a href="/collections/all" class="mega-list-link">T-SHIRTS</a>
+                      <a href="/collections/all" class="mega-list-link">SWEATPANTS</a>
+                    {% endunless %}
+                  </div>
+                </div>
+
+                <!-- Column 3: Promo Banner 1 (Admin Theme Editor) -->
+                <div class="mega-menu-col">
+                  <a href="{{ section.settings.mega_link_1 | default: '/collections/all' }}" class="mega-promo-card">
+                    {% if section.settings.mega_image_1 != blank %}
+                      <img src="{{ section.settings.mega_image_1 | image_url: width: 800 }}" alt="{{ section.settings.mega_heading_1 | escape }}" loading="lazy" width="400" height="500">
+                    {% else %}
+                      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" alt="Spotlight Promo" loading="lazy" width="400" height="500">
+                    {% endif %}
+                    <div class="mega-promo-overlay">
+                      <span class="mega-promo-tag">{{ section.settings.mega_subheading_1 | default: 'SPOTLIGHT' }}</span>
+                      <h3 class="mega-promo-title">{{ section.settings.mega_heading_1 | default: 'Transient Echoes' }}</h3>
+                    </div>
+                  </a>
+                </div>
+
+                <!-- Column 4: Promo Banner 2 (Admin Theme Editor) -->
+                <div class="mega-menu-col">
+                  <a href="{{ section.settings.mega_link_2 | default: '/collections/all' }}" class="mega-promo-card">
+                    {% if section.settings.mega_image_2 != blank %}
+                      <img src="{{ section.settings.mega_image_2 | image_url: width: 800 }}" alt="{{ section.settings.mega_heading_2 | escape }}" loading="lazy" width="400" height="500">
+                    {% else %}
+                      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="SS26 Promo" loading="lazy" width="400" height="500">
+                    {% endif %}
+                    <div class="mega-promo-overlay">
+                      <span class="mega-promo-tag">{{ section.settings.mega_subheading_2 | default: 'SS26' }}</span>
+                      <h3 class="mega-promo-title">{{ section.settings.mega_heading_2 | default: 'Get ready for the sun' }}</h3>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="/pages/about" class="nav-link">Our Story</a>
+        <a href="/pages/contact" class="nav-link">Contact</a>
       </nav>
 
       <div class="header-actions">
-        <a href="{{ routes.search_url }}" class="icon-btn" aria-label="Search">
+        <button type="button" class="icon-btn" data-toggle-search aria-label="Search">
           {% render 'icon-search' %}
-        </a>
+        </button>
 
-        {% if shop.customer_accounts_enabled %}
-          <a href="{{ routes.account_url }}" class="icon-btn" aria-label="Account">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </a>
-        {% endif %}
+        <button type="button" class="icon-btn" data-open-account-drawer aria-label="Account">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </button>
 
         <button
           type="button"
@@ -58,6 +136,36 @@
       </div>
     </div>
   </div>
+
+  <!-- Search Modal Drawer Overlay -->
+  <div class="search-drawer-overlay" data-search-drawer>
+    <div class="container">
+      <form action="{{ routes.search_url }}" method="get" role="search">
+        <div class="search-input-wrapper">
+          <div style="color: #0f172a; display: flex; align-items: center;">
+            {% render 'icon-search' %}
+          </div>
+          <input
+            type="search"
+            name="q"
+            class="search-drawer-input"
+            placeholder="Search anything"
+            autocomplete="off"
+            style="color: #0f172a;"
+          >
+          <button
+            type="button"
+            class="icon-btn"
+            data-close-search
+            aria-label="Close Search"
+            style="color: #0f172a; border: 1px solid #e2e8f0; border-radius: 50%; padding: 0.5rem; flex-shrink: 0;"
+          >
+            {% render 'icon-close' %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </header>
 
 {% schema %}
@@ -67,7 +175,19 @@
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo image"
+      "label": "Logo Image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Brand Text (Fallback)",
+      "default": "Egoiste"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_serif_font",
+      "label": "Use Editorial Serif Font for Text Logo",
+      "default": true
     },
     {
       "type": "range",
@@ -80,10 +200,52 @@
       "default": 140
     },
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
+      "type": "header",
+      "content": "Mega Menu Promo Banners"
+    },
+    {
+      "type": "image_picker",
+      "id": "mega_image_1",
+      "label": "Promo Banner 1 Image"
+    },
+    {
+      "type": "text",
+      "id": "mega_subheading_1",
+      "label": "Promo Banner 1 Subheading",
+      "default": "SPOTLIGHT"
+    },
+    {
+      "type": "text",
+      "id": "mega_heading_1",
+      "label": "Promo Banner 1 Heading",
+      "default": "Transient Echoes"
+    },
+    {
+      "type": "url",
+      "id": "mega_link_1",
+      "label": "Promo Banner 1 Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "mega_image_2",
+      "label": "Promo Banner 2 Image"
+    },
+    {
+      "type": "text",
+      "id": "mega_subheading_2",
+      "label": "Promo Banner 2 Subheading",
+      "default": "SS26"
+    },
+    {
+      "type": "text",
+      "id": "mega_heading_2",
+      "label": "Promo Banner 2 Heading",
+      "default": "Get ready for the sun"
+    },
+    {
+      "type": "url",
+      "id": "mega_link_2",
+      "label": "Promo Banner 2 Link"
     }
   ]
 }

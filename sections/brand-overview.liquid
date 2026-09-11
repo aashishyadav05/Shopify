@@ -1,0 +1,141 @@
+<div class="brand-overview-section" style="padding: 5rem 0 4rem; background: var(--color-bg, #ffffff); color: var(--color-text, #0f172a); border-bottom: 1px solid #f1f5f9;">
+  <div class="container">
+    <div class="brand-overview-content" style="max-width: 960px; margin: 0 auto; text-align: center;">
+      {% if section.settings.subheading != blank %}
+        <span class="brand-overview-badge" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-accent, #2563eb); display: block; margin-bottom: 0.75rem;">
+          {{ section.settings.subheading }}
+        </span>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="brand-overview-title" style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.85rem, 3.5vw, 2.75rem); font-weight: 800; line-height: 1.25; margin-bottom: 1.5rem; letter-spacing: -0.02em; color: #0f172a;">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="brand-overview-text" style="font-size: 1.1rem; line-height: 1.8; color: #475569; max-width: 820px; margin: 0 auto 2.5rem; font-weight: 400;">
+          {{ section.settings.text }}
+        </div>
+      {% endif %}
+
+      <!-- Feature Highlight Stats Row -->
+      {% if section.settings.show_stats %}
+        <div class="brand-overview-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; padding: 2rem 0; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; margin-bottom: 2.5rem;">
+          {% if section.settings.stat_1_num != blank %}
+            <div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.2rem;">{{ section.settings.stat_1_num }}</div>
+              <div style="font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{ section.settings.stat_1_label }}</div>
+            </div>
+          {% endif %}
+
+          {% if section.settings.stat_2_num != blank %}
+            <div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.2rem;">{{ section.settings.stat_2_num }}</div>
+              <div style="font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{ section.settings.stat_2_label }}</div>
+            </div>
+          {% endif %}
+
+          {% if section.settings.stat_3_num != blank %}
+            <div>
+              <div style="font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.2rem;">{{ section.settings.stat_3_num }}</div>
+              <div style="font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{ section.settings.stat_3_label }}</div>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.button_label != blank %}
+        <a href="{{ section.settings.button_link | default: '/pages/about' }}" class="btn btn-primary" style="padding: 0.9rem 2.25rem; font-size: 0.95rem; font-weight: 700; background: #0f172a; color: #ffffff; text-decoration: none; display: inline-block;">
+          {{ section.settings.button_label }} &rarr;
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brand & Product Overview",
+  "tag": "section",
+  "class": "section-brand-overview",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading / Badge",
+      "default": "Brand Overview & Ethos"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Redefining Modern Luxury Through Outdoor & Alpine Craftsmanship"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Overview Description",
+      "default": "<p>Egoiste is born at the intersection of wilderness freedom and refined aesthetic. Each piece in our collection is thoughtfully engineered with natural organic fibers, precision tailoring, and weather-defying materials designed to elevate your everyday wardrobe.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Feature / Stat Highlights",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_num",
+      "label": "Stat 1 Number/Title",
+      "default": "100%"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "Organic & Sustainable"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_num",
+      "label": "Stat 2 Number/Title",
+      "default": "Alpine Grade"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "Weather-Resistant Weaves"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_num",
+      "label": "Stat 3 Number/Title",
+      "default": "Worldwide"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "Express Delivery"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Explore Our Story"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand & Product Overview"
+    }
+  ]
+}
+{% endschema %}
