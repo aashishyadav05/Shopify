@@ -1,0 +1,47 @@
+{
+  "name": "Home Page",
+  "sections": {
+    "hero_banner": {
+      "type": "hero-banner",
+      "settings": {
+        "heading": "Elevate Your Everyday Style",
+        "subtext": "<p>Discover premium dynamic collections crafted for modern life.</p>",
+        "button_label": "Explore Collection",
+        "button_link": "/collections/all",
+        "text_alignment": "left",
+        "image_overlay_opacity": 30
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured Collections",
+        "products_to_show": 4,
+        "columns_desktop": "4"
+      }
+    },
+    "image_with_text": {
+      "type": "image-with-text",
+      "settings": {
+        "layout": "left",
+        "heading": "Crafted with Uncompromising Quality",
+        "text": "<p>Our products are engineered with premium materials to ensure durability, sleek aesthetics, and maximum performance.</p>",
+        "button_label": "Discover Our Story",
+        "button_link": "/pages/about"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Join Our Exclusive VIP Club",
+        "subtext": "<p>Subscribe today to get 15% off your first purchase plus early access to new releases.</p>"
+      }
+    }
+  },
+  "order": [
+    "hero_banner",
+    "featured_collection",
+    "image_with_text",
+    "newsletter"
+  ]
+}

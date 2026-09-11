@@ -1,0 +1,155 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Dynamic Shopify Custom Theme",
+    "theme_author": "Antigravity",
+    "theme_version": "1.0.0",
+    "theme_documentation_url": "https://shopify.dev/docs/storefronts/themes",
+    "theme_support_url": "https://shopify.dev/docs/storefronts/themes"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background Color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text Color",
+        "default": "#121212"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Accent Color",
+        "default": "#0f172a"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Highlight Accent Color",
+        "default": "#2563eb"
+      },
+      {
+        "type": "color",
+        "id": "color_card_bg",
+        "label": "Card Background Color",
+        "default": "#f8fafc"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border Color",
+        "default": "#e2e8f0"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale Badge Color",
+        "default": "#dc2626"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "label": "Heading Font",
+        "default": "inter_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body Font",
+        "default": "inter_n4"
+      },
+      {
+        "type": "range",
+        "id": "body_font_size",
+        "min": 13,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "label": "Body Font Size",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "Maximum Page Width",
+        "default": 1280
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Global Border Radius",
+        "default": 12
+      }
+    ]
+  },
+  {
+    "name": "Cart Drawer",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart Type",
+        "options": [
+          { "value": "drawer", "label": "Slide-out Drawer" },
+          { "value": "page", "label": "Dedicated Page" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free Shipping Threshold ($)",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram_link",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook_link",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "social_twitter_link",
+        "label": "Twitter / X URL"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube_link",
+        "label": "YouTube URL"
+      }
+    ]
+  }
+]

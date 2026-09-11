@@ -1,0 +1,15 @@
+{% style %}
+  :root {
+    --color-bg: {{ settings.color_bg | default: '#ffffff' }};
+    --color-text: {{ settings.color_text | default: '#0f172a' }};
+    --color-primary: {{ settings.color_primary | default: '#0f172a' }};
+    --color-accent: {{ settings.color_accent | default: '#2563eb' }};
+    --color-card-bg: {{ settings.color_card_bg | default: '#f8fafc' }};
+    --color-border: {{ settings.color_border | default: '#e2e8f0' }};
+    --color-sale: {{ settings.color_sale | default: '#dc2626' }};
+
+    --font-body-size: {{ settings.body_font_size | default: 16 }}px;
+    --page-width: {{ settings.page_width | default: 1280 }}px;
+    --border-radius: {{ settings.border_radius | default: 12 }}px;
+  }
+{% endstyle %}

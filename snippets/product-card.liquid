@@ -1,0 +1,90 @@
+{% comment %}
+  Renders a dynamic product card.
+  Accepts:
+  - card_product: {Object} Product Liquid object
+{% endcomment %}
+
+{% if card_product != blank %}
+  <div class="product-card">
+    <a href="{{ card_product.url }}" class="product-card-media">
+      {% if card_product.compare_at_price > card_product.price %}
+        <div class="product-card-badge">
+          <span class="badge badge-sale">Sale</span>
+        </div>
+      {% endif %}
+
+      {% if card_product.featured_media != blank %}
+        <img
+          src="{{ card_product.featured_media | image_url: width: 600 }}"
+          alt="{{ card_product.featured_media.alt | escape }}"
+          class="product-card-image"
+          loading="lazy"
+          width="600"
+          height="600"
+        >
+        {% if card_product.media[1] != blank %}
+          <img
+            src="{{ card_product.media[1] | image_url: width: 600 }}"
+            alt="{{ card_product.media[1].alt | escape }}"
+            class="product-card-image hover-image"
+            loading="lazy"
+            width="600"
+            height="600"
+          >
+        {% endif %}
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'product-card-image' }}
+      {% endif %}
+    </a>
+
+    <div class="product-card-info">
+      {% if card_product.vendor != blank %}
+        <div class="product-card-vendor">{{ card_product.vendor }}</div>
+      {% endif %}
+
+      <a href="{{ card_product.url }}" class="product-card-title">
+        {{ card_product.title | escape }}
+      </a>
+
+      <div class="product-card-price">
+        <span>{{ card_product.price | money }}</span>
+        {% if card_product.compare_at_price > card_product.price %}
+          <span class="price-compare">{{ card_product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+
+      <div class="product-card-actions">
+        {% form 'product', card_product, data-add-to-cart-form: '' %}
+          <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+          <button
+            type="submit"
+            name="add"
+            class="btn btn-outline"
+            style="width: 100%; font-size: 0.875rem;"
+            {% unless card_product.available %}disabled{% endunless %}
+          >
+            {% if card_product.available %}
+              Add to Cart
+            {% else %}
+              Sold Out
+            {% endif %}
+          </button>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="product-card">
+    <div class="product-card-media">
+      {{ 'product-1' | placeholder_svg_tag: 'product-card-image' }}
+    </div>
+    <div class="product-card-info">
+      <div class="product-card-vendor">Vendor</div>
+      <div class="product-card-title">Example Product Title</div>
+      <div class="product-card-price">$19.99</div>
+      <div class="product-card-actions">
+        <button class="btn btn-outline" style="width: 100%; font-size: 0.875rem;" disabled>Add to Cart</button>
+      </div>
+    </div>
+  </div>
+{% endif %}

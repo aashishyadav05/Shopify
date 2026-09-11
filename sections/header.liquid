@@ -1,0 +1,90 @@
+<header class="site-header" data-site-header>
+  <div class="container">
+    <div class="header-inner">
+      <button class="icon-btn mobile-nav-toggle" data-mobile-menu-toggle aria-label="Toggle Navigation">
+        {% render 'icon-menu' %}
+      </button>
+
+      <a href="{{ routes.root_url }}" class="header-logo">
+        {% if section.settings.logo != blank %}
+          <img
+            src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}"
+            alt="{{ shop.name | escape }}"
+            width="{{ section.settings.logo_width }}"
+            height="auto"
+          >
+        {% else %}
+          <span>{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      <nav class="header-nav" data-header-nav>
+        {% assign main_menu = linklists[section.settings.menu] %}
+        {% if main_menu.links.size > 0 %}
+          {% for link in main_menu.links %}
+            <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="{{ routes.root_url }}" class="nav-link">Home</a>
+          <a href="{{ routes.all_products_collection_url }}" class="nav-link">Shop All</a>
+        {% endif %}
+      </nav>
+
+      <div class="header-actions">
+        <a href="{{ routes.search_url }}" class="icon-btn" aria-label="Search">
+          {% render 'icon-search' %}
+        </a>
+
+        {% if shop.customer_accounts_enabled %}
+          <a href="{{ routes.account_url }}" class="icon-btn" aria-label="Account">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
+        {% endif %}
+
+        <button
+          type="button"
+          class="icon-btn"
+          {% if settings.cart_type == 'drawer' %}data-open-cart-drawer{% else %}onclick="window.location.href='{{ routes.cart_url }}'"{% endif %}
+          aria-label="Cart"
+        >
+          {% render 'icon-cart' %}
+          <span class="cart-badge-count" data-cart-count style="{% if cart.item_count == 0 %}display:none;{% endif %}">
+            {{ cart.item_count }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Custom logo width",
+      "default": 140
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

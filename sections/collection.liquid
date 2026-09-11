@@ -1,0 +1,94 @@
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+  <div style="margin-bottom: 3rem;">
+    <h1 style="font-size: 2.5rem; font-weight: 800;">
+      {{ collection.title | default: "All Products" }}
+    </h1>
+    {% if collection.description != blank %}
+      <div style="margin-top: 0.5rem; opacity: 0.8; max-width: 700px;">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% paginate collection.products by section.settings.products_per_page %}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+      <div style="font-weight: 500; opacity: 0.8;">
+        Showing {{ collection.products.size }} of {{ collection.all_products_count }} products
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <label for="sort-by" style="font-weight: 600;">Sort by:</label>
+        <select
+          id="sort-by"
+          onchange="location.href = '?sort_by=' + this.value;"
+          style="padding: 0.5rem 1rem; border-radius: var(--border-radius, 12px); border: 1px solid var(--color-border, #e2e8f0);"
+        >
+          {% for option in collection.sort_options %}
+            <option
+              value="{{ option.value }}"
+              {% if option.value == collection.sort_by %}selected{% endif %}
+            >
+              {{ option.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    {% if collection.products.size > 0 %}
+      <div class="grid grid-{{ section.settings.columns_desktop }}">
+        {% for product in collection.products %}
+          {% render 'product-card', card_product: product %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div style="text-align: center; padding: 4rem 0;">
+        <p style="font-size: 1.25rem; opacity: 0.7;">No products found in this collection.</p>
+      </div>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+        {% if paginate.previous %}
+          <a href="{{ paginate.previous.url }}" class="btn btn-outline">&larr; Previous</a>
+        {% endif %}
+
+        <span style="display: flex; align-items: center; padding: 0 1rem; font-weight: 600;">
+          Page {{ paginate.current_page }} of {{ paginate.pages }}
+        </span>
+
+        {% if paginate.next %}
+          <a href="{{ paginate.next.url }}" class="btn btn-outline">Next &rarr;</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "label": "Products per page",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "columns_desktop",
+      "label": "Number of columns on desktop",
+      "options": [
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
+    }
+  ]
+}
+{% endschema %}

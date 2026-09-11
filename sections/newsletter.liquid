@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="newsletter-section">
+    {% if section.settings.heading != blank %}
+      <h2 style="font-size: 2rem; font-weight: 800;">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.subtext != blank %}
+      <div style="opacity: 0.8; margin-top: 0.5rem;">{{ section.settings.subtext }}</div>
+    {% endif %}
+
+    {% form 'customer', class: 'newsletter-form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input
+        type="email"
+        name="contact[email]"
+        class="newsletter-input"
+        placeholder="Enter your email address"
+        required
+      >
+      <button type="submit" class="btn btn-accent">
+        Subscribe
+      </button>
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the VIP Club"
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "<p>Subscribe to receive 15% off your first order and exclusive updates.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

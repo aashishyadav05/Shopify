@@ -1,0 +1,39 @@
+{
+  "name": "Footer Group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "menu": {
+          "type": "link_list",
+          "settings": {
+            "title": "Quick links",
+            "menu": "footer"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "heading": "About our store",
+            "subtext": "<p>Share store details, promotions, or brand message with your customers.</p>"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "Subscribe to our newsletter"
+          }
+        }
+      },
+      "block_order": [
+        "menu",
+        "text",
+        "newsletter"
+      ]
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

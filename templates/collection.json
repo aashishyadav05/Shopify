@@ -1,0 +1,15 @@
+{
+  "name": "Collection Page",
+  "sections": {
+    "main_collection": {
+      "type": "collection",
+      "settings": {
+        "products_per_page": 12,
+        "columns_desktop": "4"
+      }
+    }
+  },
+  "order": [
+    "main_collection"
+  ]
+}

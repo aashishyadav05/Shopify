@@ -1,0 +1,16 @@
+{
+  "current": {
+    "color_bg": "#ffffff",
+    "color_text": "#0f172a",
+    "color_primary": "#0f172a",
+    "color_accent": "#2563eb",
+    "color_card_bg": "#f8fafc",
+    "color_border": "#e2e8f0",
+    "color_sale": "#dc2626",
+    "body_font_size": 16,
+    "page_width": 1280,
+    "border_radius": 12,
+    "cart_type": "drawer",
+    "free_shipping_threshold": 100
+  }
+}
