@@ -1,8 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Contact Page",
   "sections": {
     "contact_info": {
-      "type": "contact"
+      "type": "contact",
+      "settings": {
+        "image": "shopify://shop_images/daniel-roe-lpjb_UMOyx8-unsplash.jpg",
+        "subheading": "Get In Touch",
+        "heading": "Contact Us & Store Location",
+        "about_text": "We are committed to delivering exceptional quality, timeless design, and unmatched customer service. Reach out to us for store inquiries, customer support, or partnership opportunities.",
+        "store_name": "Egoiste Flagship Store",
+        "address": "100 Alpine Forest Way, Suite 400, CA 94041",
+        "phone": "+1 (800) 555-0199",
+        "email": "contact@egoiste.com",
+        "hours": "Mon - Sat: 10:00 AM - 8:00 PM | Sun: 11:00 AM - 6:00 PM"
+      }
     }
   },
   "order": [

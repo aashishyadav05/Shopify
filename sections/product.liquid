@@ -85,11 +85,8 @@
             {% endunless %}
 
           {% when 'buy_buttons' %}
-            <div {{ block.shopify_attributes }}>
               {% form 'product', product, data-add-to-cart-form: '' %}
-                {% if product.has_only_default_variant %}
-                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                {% endif %}
+                <input type="hidden" name="id" data-product-variant-id value="{{ product.selected_or_first_available_variant.id }}">
 
                 <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
                   <div style="width: 100px;">

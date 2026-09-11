@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Header Group",
   "type": "header",
@@ -5,8 +14,16 @@
     "header": {
       "type": "header",
       "settings": {
-        "menu": "main-menu",
-        "logo_width": 140
+        "logo_text": "Crafted",
+        "use_serif_font": true,
+        "logo_width": 140,
+        "mega_image_1": "shopify://shop_images/forest-oil-painting.png",
+        "mega_subheading_1": "SPOTLIGHT",
+        "mega_heading_1": "Transient Echoes",
+        "mega_link_1": "",
+        "mega_subheading_2": "SS26",
+        "mega_heading_2": "Get ready for the sun",
+        "mega_link_2": ""
       }
     }
   },

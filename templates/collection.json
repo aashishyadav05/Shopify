@@ -1,11 +1,22 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Collection Page",
   "sections": {
     "main_collection": {
       "type": "collection",
       "settings": {
         "products_per_page": 12,
-        "columns_desktop": "4"
+        "banner_image_1": "shopify://shop_images/cagatay-orhan-PYh4QCX_fmE-unsplash.jpg",
+        "banner_tag_1": "New In",
+        "banner_image_2": "shopify://shop_images/daniel-roe-lpjb_UMOyx8-unsplash.jpg",
+        "banner_tag_2": "Featured Edit"
       }
     }
   },

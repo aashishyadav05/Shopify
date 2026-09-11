@@ -281,6 +281,15 @@ function initAddToCartForms() {
 
       try {
         const formData = new FormData(form);
+
+        // Fallback for multi-variant select outside form
+        if (!formData.has('id') || !formData.get('id')) {
+          const variantSelect = document.querySelector('[data-variant-select]');
+          if (variantSelect && variantSelect.value) {
+            formData.set('id', variantSelect.value);
+          }
+        }
+
         const res = await fetch('/cart/add.js', {
           method: 'POST',
           body: formData,
@@ -293,6 +302,9 @@ function initAddToCartForms() {
           } else {
             window.location.href = '/cart';
           }
+        } else {
+          const errData = await res.json();
+          alert(errData.description || 'Could not add item to cart.');
         }
       } catch (err) {
         console.error('Error adding to cart:', err);
@@ -314,9 +326,13 @@ function initVariantSelectors() {
   if (variantSelect) {
     variantSelect.addEventListener('change', (e) => {
       const selectedOption = e.target.options[e.target.selectedIndex];
+      const variantId = selectedOption.value;
       const price = selectedOption.dataset.price;
       const comparePrice = selectedOption.dataset.comparePrice;
       const imageSrc = selectedOption.dataset.image;
+
+      const hiddenIdInput = document.querySelector('[data-product-variant-id]');
+      if (hiddenIdInput) hiddenIdInput.value = variantId;
 
       const priceEl = document.querySelector('[data-product-price]');
       const compareEl = document.querySelector('[data-product-compare-price]');

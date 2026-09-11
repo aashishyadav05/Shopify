@@ -1,5 +1,13 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "name": "Home Page",
   "sections": {
     "cover_slider": {
       "type": "cover-slider",
@@ -7,12 +15,11 @@
         "slide_1": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/john-rodenn-castillo-rQqWOHZ96OM-unsplash.jpg",
             "heading": "Deep Alpine Woods",
             "tab_label": "Deep Alpine Woods",
             "tab_subtitle": "Forest Collection",
-            "subtext": "<p>Immerse yourself in lush pine canopy and crisp highland air. Crafted with weather-resistant natural textures inspired by deep evergreen forests.</p>",
-            "button_label": "Shop Forest Collection",
-            "button_link": "/collections/all"
+            "subtext": "<p>Immerse yourself in lush pine canopy and crisp highland air. Crafted with weather-resistant natural textures inspired by deep evergreen forests.</p>"
           }
         },
         "slide_2": {
@@ -21,52 +28,59 @@
             "heading": "Mountain Ridge Expedition",
             "tab_label": "Mountain Ridge",
             "tab_subtitle": "Alpine Series",
-            "subtext": "<p>Built for high-altitude serenity and rugged peak vistas. Earthy tones and durable weaves forged for mountain landscapes.</p>",
-            "button_label": "Explore Alpine Series",
-            "button_link": "/collections/all"
+            "subtext": "<p>Built for high-altitude serenity and rugged peak vistas. Earthy tones and durable weaves forged for mountain landscapes.</p>"
+          }
+        },
+        "slide_9ac9pi": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/erika-U6GYjO-9jBM-unsplash.jpg",
+            "heading": "Court & Country",
+            "tab_label": "Court & Country",
+            "tab_subtitle": "Collection",
+            "subtext": "<p>Relaxed tailoring and clean silhouettes inspired by the court and countryside. Natural fabrics, refined cuts.</p>"
           }
         },
         "slide_3": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/magnezis-magnestic-GisleQunnWQ-unsplash_ec8b1fbd-243c-47c7-88f4-37b03688ee46.jpg",
             "heading": "Mist & Pine Valley",
             "tab_label": "Mist & Pine",
             "tab_subtitle": "Highland Edit",
-            "subtext": "<p>Embrace morning forest fog and tranquil wilderness trails. Soft layering pieces washed in moss green and cedar brown tones.</p>",
-            "button_label": "Discover Highland Edit",
-            "button_link": "/collections/all"
+            "subtext": "<p>Embrace morning forest fog and tranquil wilderness trails. Soft layering pieces washed in moss green and cedar brown tones.</p>"
           }
         },
         "slide_4": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/sebastian-unrau-sp-p7uuT0tw-unsplash_33a17946-3023-421f-90fd-88798a520715.jpg",
             "heading": "Wilderness Summit",
             "tab_label": "Wilderness Summit",
             "tab_subtitle": "Peak Collection",
-            "subtext": "<p>Conquer the great outdoors in style. Premium technical apparel engineered for cold mountain breezes and untamed wilderness trails.</p>",
-            "button_label": "Shop Summit Gear",
-            "button_link": "/collections/all"
+            "subtext": "<p>Conquer the great outdoors in style. Premium technical apparel engineered for cold mountain breezes and untamed wilderness trails.</p>"
           }
         },
         "slide_5": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/gustav-gullstrand-d6kSvT2xZQo-unsplash_2f26fb64-b84b-4c8a-bae1-7cdc85799f5c.jpg",
             "heading": "Timber & Canopy",
             "tab_label": "Timber & Canopy",
             "tab_subtitle": "Earth & Wood",
-            "subtext": "<p>Inspired by ancient forest timber, deep bark textures, and serene natural horizons. Sustainable materials made to endure every journey.</p>",
-            "button_label": "Explore Timber Collection",
-            "button_link": "/collections/all"
+            "subtext": "<p>Inspired by ancient forest timber, deep bark textures, and serene natural horizons. Sustainable materials made to endure every journey.</p>"
           }
         }
       },
       "block_order": [
         "slide_1",
         "slide_2",
+        "slide_9ac9pi",
         "slide_3",
         "slide_4",
         "slide_5"
-      ]
+      ],
+      "settings": {}
     },
     "brand_overview_ethos": {
       "type": "brand-overview",
@@ -81,7 +95,8 @@
         "stat_2_label": "Weather-Resistant Weaves",
         "stat_3_num": "Worldwide",
         "stat_3_label": "Express Delivery",
-        "button_label": "Explore Our Story"
+        "button_label": "Explore Our Product",
+        "button_link": "shopify://collections/all"
       }
     },
     "featured_collection": {
@@ -95,6 +110,7 @@
     "image_with_text": {
       "type": "image-with-text",
       "settings": {
+        "image": "shopify://shop_images/john-rodenn-castillo-rQqWOHZ96OM-unsplash.jpg",
         "layout": "left",
         "heading": "Crafted with Uncompromising Quality",
         "text": "<p>Our products are engineered with premium materials to ensure durability, sleek aesthetics, and maximum performance.</p>",
@@ -105,13 +121,14 @@
     "hero_banner": {
       "type": "hero-banner",
       "settings": {
+        "image": "shopify://shop_images/erika-U6GYjO-9jBM-unsplash.jpg",
+        "image_overlay_opacity": 45,
+        "banner_height": "medium",
         "subheading": "AUTUMN / WINTER '26 EDIT",
         "heading": "Crafted for Untamed Horizons & Alpine Serenity",
         "subtext": "<p>Discover our signature outerwear engineered with sustainable organic weaves, precision tailoring, and weather-defying warmth.</p>",
         "button_label": "Explore Winter Edit",
         "button_link": "/collections/all",
-        "banner_height": "medium",
-        "image_overlay_opacity": 45,
         "text_alignment": "left"
       }
     },
